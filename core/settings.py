@@ -7,7 +7,6 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config(
     'SECRET_KEY',
@@ -18,8 +17,6 @@ SECRET_KEY = config(
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', config('SERVER', default='127.0.0.1')]
-
-
 
 # Application definition
 
@@ -35,6 +32,10 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
 
     'taggit',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.microsoft',
 
     'apps.blog.apps.BlogConfig',
 ]
@@ -70,7 +71,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
 DATABASES = {
     'default': {
         'ENGINE': config("SQL_ENGINE", "django.db.backends.postgresql"),
@@ -82,8 +82,10 @@ DATABASES = {
     }
 }
 
-
-
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -102,7 +104,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 SITE_ID = 1
@@ -115,7 +116,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
@@ -125,11 +125,11 @@ MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# LOGIN_REDIRECT_URL = 'blog:post_list'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -137,3 +137,38 @@ EMAIL_HOST_USER = 'your_account@gmail.com'
 EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+ACCOUNT_EMAIL_REQUIRED=False
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'microsoft': {
+        'CALLBACK_URL': 'http://localhost:8000/accounts/microsoft/login/callback/',
+        # 'AUTH_PARAMS': {'resource': 'https://graph.microsoft.com'},
+    }
+}
+
+# SOCIALACCOUNT_PROVIDERS = {
+#     'microsoft': {
+#         'APP': {
+#             'client_id': config("MICROSOFT_AUTH_CLIENT_ID", "x"),
+#             'secret': config("MICROSOFT_AUTH_CLIENT_SECRET", "x"),
+#             'tenant': config("MICROSOFT_TENANT_ID", "x"),
+#             'TENANT': 'organizations',
+#         }
+#     }
+# }
+# 'microsoft': {
+#     'AUTH_PARAMS': {
+#         'scope': 'https://graph.microsoft.com/.default',
+#     },
+#     'METHOD': 'oauth2',
+#     'VERIFIED_EMAIL': False,
+#     'APP': {
+#         'client_id': config("MICROSOFT_AUTH_CLIENT_ID", "x"),
+#         'secret': config("MICROSOFT_AUTH_CLIENT_SECRET", "x"),
+#         'CALLBACK_URL': 'http://localhost:8000/blog/',
+#         'TENANT': 'organizations',
+#     }
+# },
+
