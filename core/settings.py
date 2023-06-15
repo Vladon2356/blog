@@ -147,28 +147,3 @@ SOCIALACCOUNT_PROVIDERS = {
         # 'AUTH_PARAMS': {'resource': 'https://graph.microsoft.com'},
     }
 }
-
-# SOCIALACCOUNT_PROVIDERS = {
-#     'microsoft': {
-#         'APP': {
-#             'client_id': config("MICROSOFT_AUTH_CLIENT_ID", "x"),
-#             'secret': config("MICROSOFT_AUTH_CLIENT_SECRET", "x"),
-#             'tenant': config("MICROSOFT_TENANT_ID", "x"),
-#             'TENANT': 'organizations',
-#         }
-#     }
-# }
-# 'microsoft': {
-#     'AUTH_PARAMS': {
-#         'scope': 'https://graph.microsoft.com/.default',
-#     },
-#     'METHOD': 'oauth2',
-#     'VERIFIED_EMAIL': False,
-#     'APP': {
-#         'client_id': config("MICROSOFT_AUTH_CLIENT_ID", "x"),
-#         'secret': config("MICROSOFT_AUTH_CLIENT_SECRET", "x"),
-#         'CALLBACK_URL': 'http://localhost:8000/blog/',
-#         'TENANT': 'organizations',
-#     }
-# },
-
